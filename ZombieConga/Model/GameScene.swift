@@ -41,7 +41,8 @@ class GameScene: SKScene {
         lastUpdateTime = currentTime
 //        println("\(dt * 1000) milliseconds since last update")
 //        zombie.position = CGPoint (x: zombie.position.x + 4, y: zombie.position.y)
-        moveSprite(zombie, velocity: CGPoint(x: zombieMovePointsPerSec, y: 0))
+//        moveSprite(zombie, velocity: CGPoint(x: zombieMovePointsPerSec, y: 0))
+        moveSprite(zombie, velocity: velocity)
     }
     
     
@@ -52,5 +53,30 @@ class GameScene: SKScene {
         println("Amount to move: \(amountToMove)")
         
         sprite.position = CGPoint(x: sprite.position.x + amountToMove.x, y: sprite.position.y + amountToMove.y)
+    }
+
+    
+    func moveZombieToward(location: CGPoint){
+        let offset = CGPoint(x: location.x - zombie.position.x, y: location.y - zombie.position.y)
+        let length = sqrt(Double(offset.x * offset.x + offset.y * offset.y))
+        let direction = CGPoint(x: offset.x / CGFloat(length), y: offset.y / CGFloat(length))
+        velocity = CGPoint(x: direction.x * zombieMovePointsPerSec, y: direction.y * zombieMovePointsPerSec)
+    }
+    
+    func sceneTouched(touchLocation:CGPoint)
+    {
+        moveZombieToward(touchLocation)
+    }
+    
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        let touch = touches.anyObject() as UITouch
+        let touchLocation = touch.locationInNode(self)
+        sceneTouched(touchLocation)
+    }
+    
+    override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
+        let touch = touches.anyObject() as UITouch
+        let touchLocation = touch.locationInNode(self)
+        sceneTouched(touchLocation)
     }
 }

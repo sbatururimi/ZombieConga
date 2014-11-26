@@ -8,6 +8,7 @@
 
 import SpriteKit
 
+
 class GameScene: SKScene {
     let zombie: SKSpriteNode = SKSpriteNode(imageNamed: "zombie1")
     var lastUpdateTime: NSTimeInterval = 0
@@ -54,7 +55,6 @@ class GameScene: SKScene {
         background.zPosition = -1;
         /// zombie
         zombie.position = CGPoint(x: 400, y: 400)
-//        zombie.setScale(2.0)
         addChild(zombie)
         
 //        debugDrawPlayableArea()
@@ -83,17 +83,22 @@ class GameScene: SKScene {
     
     func moveSprite(sprite:SKSpriteNode, velocity: CGPoint)
     {
-        let amountToMove = CGPoint(x:  velocity.x * CGFloat(dt), y: velocity.y * CGFloat(dt))
-//        println("Amount to move: \(amountToMove)")
+//        let amountToMove = CGPoint(x:  velocity.x * CGFloat(dt), y: velocity.y * CGFloat(dt))
+//        sprite.position = CGPoint(x: sprite.position.x + amountToMove.x, y: sprite.position.y + amountToMove.y)
+        let amountToMove = velocity * CGFloat(dt)
+        sprite.position += amountToMove
         
-        sprite.position = CGPoint(x: sprite.position.x + amountToMove.x, y: sprite.position.y + amountToMove.y)
     }
 
     func moveZombieToward(location: CGPoint){
-        let offset = CGPoint(x: location.x - zombie.position.x, y: location.y - zombie.position.y)
-        let length = sqrt(Double(offset.x * offset.x + offset.y * offset.y))
-        let direction = CGPoint(x: offset.x / CGFloat(length), y: offset.y / CGFloat(length))
-        velocity = CGPoint(x: direction.x * zombieMovePointsPerSec, y: direction.y * zombieMovePointsPerSec)
+//        let offset = CGPoint(x: location.x - zombie.position.x, y: location.y - zombie.position.y)
+//        let length = sqrt(Double(offset.x * offset.x + offset.y * offset.y))
+//        let direction = CGPoint(x: offset.x / CGFloat(length), y: offset.y / CGFloat(length))
+//        velocity = CGPoint(x: direction.x * zombieMovePointsPerSec, y: direction.y * zombieMovePointsPerSec)
+        let offset = location - zombie.position
+        let direction = offset.normalized()
+        velocity = direction * zombieMovePointsPerSec
+
     }
     
     func sceneTouched(touchLocation:CGPoint)

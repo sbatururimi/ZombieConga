@@ -20,6 +20,7 @@
 		D966DDAB1A1C0E2300ADCB23 /* YouLose.png in Resources */ = {isa = PBXBuildFile; fileRef = D966DDA51A1C0E2300ADCB23 /* YouLose.png */; };
 		D966DDAC1A1C0E2300ADCB23 /* YouWin.png in Resources */ = {isa = PBXBuildFile; fileRef = D966DDA61A1C0E2300ADCB23 /* YouWin.png */; };
 		D966DDAD1A1C0E2300ADCB23 /* sprites.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D966DDA71A1C0E2300ADCB23 /* sprites.atlas */; };
+		D987E7FD1A26223C00E41571 /* MyUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D987E7FC1A26223C00E41571 /* MyUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		D966DDA51A1C0E2300ADCB23 /* YouLose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YouLose.png; sourceTree = "<group>"; };
 		D966DDA61A1C0E2300ADCB23 /* YouWin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YouWin.png; sourceTree = "<group>"; };
 		D966DDA71A1C0E2300ADCB23 /* sprites.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = sprites.atlas; path = Resources/sprites.atlas; sourceTree = "<group>"; };
+		D987E7FC1A26223C00E41571 /* MyUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyUtils.swift; path = Model/MyUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				D966DD9F1A1C0D8D00ADCB23 /* GameScene.swift */,
+				D987E7FC1A26223C00E41571 /* MyUtils.swift */,
 			);
 			name = Object;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				D966DDA01A1C0D8D00ADCB23 /* GameScene.swift in Sources */,
 				D966DD9E1A1C0D8000ADCB23 /* GameViewController.swift in Sources */,
 				D966DD751A1C078200ADCB23 /* AppDelegate.swift in Sources */,
+				D987E7FD1A26223C00E41571 /* MyUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

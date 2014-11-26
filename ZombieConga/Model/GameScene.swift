@@ -20,7 +20,9 @@ class GameScene: SKScene {
         let maxAspectRatio:CGFloat = 16.0/9.0
         let playableHeight = size.width / maxAspectRatio
         let playableMargin =  (size.height - playableHeight) / 2.0
-        playableRect = CGRect(x: 0, y: playableMargin, width: size.width, height: size.height)
+        playableRect = CGRect(x: 0, y: playableMargin,
+            width: size.width,
+            height: playableHeight)
         
         super.init(size: size)
     }
@@ -29,6 +31,19 @@ class GameScene: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    func debugDrawPlayableArea()
+    {
+        let shape = SKShapeNode()
+        let path = CGPathCreateMutable()
+        CGPathAddRect(path, nil, playableRect)
+        shape.path = path
+        shape.strokeColor = SKColor.redColor()
+        shape.lineWidth = 4.0
+        addChild(shape)
+    }
+    
+    
     override func didMoveToView(view: SKView) {
         backgroundColor = SKColor.whiteColor()
         let background = SKSpriteNode(imageNamed: "background1")
@@ -36,11 +51,13 @@ class GameScene: SKScene {
         
         background.position = CGPoint(x: size.width / 2, y: size.height / 2)
         background.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        background.zPosition = -1;
         /// zombie
         zombie.position = CGPoint(x: 400, y: 400)
 //        zombie.setScale(2.0)
         addChild(zombie)
         
+//        debugDrawPlayableArea()
     }
     
     override func update(currentTime: NSTimeInterval) {
@@ -59,6 +76,7 @@ class GameScene: SKScene {
         moveSprite(zombie, velocity: velocity)
         
         boundsCheckZombie()
+        rotateSprite(zombie, direction: velocity)
     }
     
     
@@ -71,7 +89,6 @@ class GameScene: SKScene {
         sprite.position = CGPoint(x: sprite.position.x + amountToMove.x, y: sprite.position.y + amountToMove.y)
     }
 
-    0.16/
     func moveZombieToward(location: CGPoint){
         let offset = CGPoint(x: location.x - zombie.position.x, y: location.y - zombie.position.y)
         let length = sqrt(Double(offset.x * offset.x + offset.y * offset.y))
@@ -97,8 +114,10 @@ class GameScene: SKScene {
     }
     
     func boundsCheckZombie(){
-        let bottomLeft = CGPointZero
-        let topRight   = CGPoint(x: size.width, y: size.height)
+//        let bottomLeft = CGPointZero
+//        let topRight   = CGPoint(x: size.width, y: size.height)
+        let bottomLeft = CGPoint(x: 0, y: CGRectGetMinY(playableRect))
+        let topRight = CGPoint(x: size.width, y: CGRectGetMaxY(playableRect))
         
         if zombie.position.x <= bottomLeft.x{
             zombie.position.x = bottomLeft.x
@@ -123,5 +142,10 @@ class GameScene: SKScene {
         }
     }
     
+    
+    func rotateSprite(sprite: SKSpriteNode, direction: CGPoint)
+    {
+        sprite.zRotation = CGFloat(atan2(Double(direction.y), Double(direction.x)))
+    }
     
 }

@@ -10,12 +10,14 @@ import SpriteKit
 
 
 class GameScene: SKScene {
+    var lastTouchLocation: CGPoint?
     let zombie: SKSpriteNode = SKSpriteNode(imageNamed: "zombie1")
     var lastUpdateTime: NSTimeInterval = 0
     var dt: NSTimeInterval = 0
     let zombieMovePointsPerSec: CGFloat = 480.0
     var velocity = CGPointZero
     let playableRect:CGRect
+    let zombieRotateRadianPerSec:CGFloat = 4.0 * π
     
     override init(size: CGSize) {
         let maxAspectRatio:CGFloat = 16.0/9.0
@@ -70,13 +72,26 @@ class GameScene: SKScene {
             dt = 0
         }
         lastUpdateTime = currentTime
-//        println("\(dt * 1000) milliseconds since last update")
-//        zombie.position = CGPoint (x: zombie.position.x + 4, y: zombie.position.y)
-//        moveSprite(zombie, velocity: CGPoint(x: zombieMovePointsPerSec, y: 0))
-        moveSprite(zombie, velocity: velocity)
+        
+        
+        if  let lastTouch = lastTouchLocation
+        {
+            var diff = lastTouch - zombie.position
+            if (diff.length() <= zombieMovePointsPerSec * CGFloat(dt))
+            {
+                zombie.position = lastTouchLocation!
+                velocity = CGPointZero
+            }
+            else
+            {
+                moveSprite(zombie, velocity: velocity)
+                
+                rotateSprite(zombie, direction: velocity, rotateRadianPerSec: zombieRotateRadianPerSec)
+            }
+        }
         
         boundsCheckZombie()
-        rotateSprite(zombie, direction: velocity)
+        
     }
     
     
@@ -103,6 +118,7 @@ class GameScene: SKScene {
     
     func sceneTouched(touchLocation:CGPoint)
     {
+        lastTouchLocation = touchLocation
         moveZombieToward(touchLocation)
     }
     
@@ -148,9 +164,13 @@ class GameScene: SKScene {
     }
     
     
-    func rotateSprite(sprite: SKSpriteNode, direction: CGPoint)
+    func rotateSprite(sprite: SKSpriteNode, direction: CGPoint, rotateRadianPerSec: CGFloat)
     {
-        sprite.zRotation = CGFloat(atan2(Double(direction.y), Double(direction.x)))
+//        sprite.zRotation = CGFloat(atan2(Double(direction.y), Double(direction.x)))
+        /// smoooth rotation
+        let shortest = shortestAngleBetween(zombie.zRotation, velocity.angle())
+        let amtToRotate = min(rotateRadianPerSec * CGFloat(dt), abs(shortest))
+        sprite.zRotation += shortest.sign() * amtToRotate
     }
     
 }

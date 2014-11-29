@@ -59,9 +59,11 @@ class GameScene: SKScene {
         zombie.position = CGPoint(x: 400, y: 400)
         addChild(zombie)
         
-        
-        spawnEnemy()
-//        debugDrawPlayableArea()
+        runAction(SKAction.repeatActionForever(
+            SKAction.sequence([SKAction.runBlock(spawnEnemy),
+                SKAction.waitForDuration(2.0)])))
+//        spawnEnemy()
+        debugDrawPlayableArea()
     }
     
     override func update(currentTime: NSTimeInterval) {
@@ -178,33 +180,16 @@ class GameScene: SKScene {
     
     func spawnEnemy(){
         let ennemy = SKSpriteNode(imageNamed: "enemy")
-        ennemy.position = CGPoint(x: size.width + ennemy.size.width/2, y: size.height/2)
+        ennemy.position = CGPoint(
+            x: size.width + ennemy.size.width/2,
+            y: CGFloat.random(
+                min: CGRectGetMinY(playableRect) + ennemy.size.height/2,
+                max: CGRectGetMaxY(playableRect) - ennemy.size.height/2))
         addChild(ennemy)
+
         
-//        let actionMove = SKAction.moveTo(
-//            CGPoint(x: -ennemy.size.width/2, y: ennemy.position.y), duration: 2.0)
-//        let actionMove = SKAction.moveByX(-(size.width + ennemy.size.width), y: 0, duration: 2.0)
-//        ennemy.runAction(actionMove)
-        
-        let actionMidMove = SKAction.moveByX(-size.width/2 - ennemy.size.width/2,
-            y: -CGRectGetHeight(playableRect)/2 + ennemy.size.height / 2, duration: 1.0)
-        let actionMove = SKAction.moveByX(-size.width/2 - ennemy.size.width/2, y: CGRectGetHeight(playableRect)/2 - ennemy.size.height / 2, duration: 1.0)
-        
-        let logMessage = SKAction.runBlock()
-            {
-                println("reached bottom")
-        }
-        
-        let wait = SKAction.waitForDuration(0.5)
-        
-        //        let reverseMid = actionMidMove.reversedAction()
-        //        let reverseMove = actionMove.reversedAction()
-        
-        
-        //        let sequence = SKAction.sequence([actionMidMove, logMessage, wait, actionMove, reverseMove, logMessage, reverseMid])
-        let halfSequence = SKAction.sequence([actionMidMove, logMessage, wait, actionMove])
-        let sequence = SKAction.sequence([halfSequence, halfSequence.reversedAction()])
-        
-        ennemy.runAction(sequence)
+        let actionMove = SKAction.moveToX(-ennemy.size.width / 2, duration: 2.0)
+        let actionRemove = SKAction.removeFromParent()
+        ennemy.runAction(SKAction.sequence([actionMove, actionRemove]))
     }
 }

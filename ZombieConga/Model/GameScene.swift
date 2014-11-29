@@ -59,6 +59,8 @@ class GameScene: SKScene {
         zombie.position = CGPoint(x: 400, y: 400)
         addChild(zombie)
         
+        
+        spawnEnemy()
 //        debugDrawPlayableArea()
     }
     
@@ -173,4 +175,36 @@ class GameScene: SKScene {
         sprite.zRotation += shortest.sign() * amtToRotate
     }
     
+    
+    func spawnEnemy(){
+        let ennemy = SKSpriteNode(imageNamed: "enemy")
+        ennemy.position = CGPoint(x: size.width + ennemy.size.width/2, y: size.height/2)
+        addChild(ennemy)
+        
+//        let actionMove = SKAction.moveTo(
+//            CGPoint(x: -ennemy.size.width/2, y: ennemy.position.y), duration: 2.0)
+//        let actionMove = SKAction.moveByX(-(size.width + ennemy.size.width), y: 0, duration: 2.0)
+//        ennemy.runAction(actionMove)
+        
+        let actionMidMove = SKAction.moveByX(-size.width/2 - ennemy.size.width/2,
+            y: -CGRectGetHeight(playableRect)/2 + ennemy.size.height / 2, duration: 1.0)
+        let actionMove = SKAction.moveByX(-size.width/2 - ennemy.size.width/2, y: CGRectGetHeight(playableRect)/2 - ennemy.size.height / 2, duration: 1.0)
+        
+        let logMessage = SKAction.runBlock()
+            {
+                println("reached bottom")
+        }
+        
+        let wait = SKAction.waitForDuration(0.5)
+        
+        //        let reverseMid = actionMidMove.reversedAction()
+        //        let reverseMove = actionMove.reversedAction()
+        
+        
+        //        let sequence = SKAction.sequence([actionMidMove, logMessage, wait, actionMove, reverseMove, logMessage, reverseMid])
+        let halfSequence = SKAction.sequence([actionMidMove, logMessage, wait, actionMove])
+        let sequence = SKAction.sequence([halfSequence, halfSequence.reversedAction()])
+        
+        ennemy.runAction(sequence)
+    }
 }

@@ -18,6 +18,7 @@ class GameScene: SKScene {
     var velocity = CGPointZero
     let playableRect:CGRect
     let zombieRotateRadianPerSec:CGFloat = 4.0 * π
+    let zombieAnimation: SKAction
     
     override init(size: CGSize) {
         let maxAspectRatio:CGFloat = 16.0/9.0
@@ -26,7 +27,15 @@ class GameScene: SKScene {
         playableRect = CGRect(x: 0, y: playableMargin,
             width: size.width,
             height: playableHeight)
+        var textures:[SKTexture] = []
+        for i in 1...4{
+           textures.append(SKTexture(imageNamed: "zombie\(i)"))
+        }
+        textures.append(textures[2])
+        textures.append(textures[1])
         
+        
+        zombieAnimation = SKAction.repeatActionForever(SKAction.animateWithTextures(textures, timePerFrame: 0.1))
         super.init(size: size)
     }
 
@@ -59,10 +68,15 @@ class GameScene: SKScene {
         zombie.position = CGPoint(x: 400, y: 400)
         addChild(zombie)
         
+        
+//        zombie.runAction(SKAction.repeatActionForever(zombieAnimation))
+        
         runAction(SKAction.repeatActionForever(
             SKAction.sequence([SKAction.runBlock(spawnEnemy),
                 SKAction.waitForDuration(2.0)])))
-//        spawnEnemy()
+        runAction(SKAction.repeatActionForever(
+            SKAction.sequence([SKAction.runBlock(spawnCat),
+                SKAction.waitForDuration(1.0)])))
         debugDrawPlayableArea()
     }
     
@@ -85,6 +99,7 @@ class GameScene: SKScene {
             {
                 zombie.position = lastTouchLocation!
                 velocity = CGPointZero
+                stopZombie()
             }
             else
             {
@@ -93,9 +108,7 @@ class GameScene: SKScene {
                 rotateSprite(zombie, direction: velocity, rotateRadianPerSec: zombieRotateRadianPerSec)
             }
         }
-        
         boundsCheckZombie()
-        
     }
     
     
@@ -114,6 +127,7 @@ class GameScene: SKScene {
 //        let length = sqrt(Double(offset.x * offset.x + offset.y * offset.y))
 //        let direction = CGPoint(x: offset.x / CGFloat(length), y: offset.y / CGFloat(length))
 //        velocity = CGPoint(x: direction.x * zombieMovePointsPerSec, y: direction.y * zombieMovePointsPerSec)
+        startZombieAnimation()
         let offset = location - zombie.position
         let direction = offset.normalized()
         velocity = direction * zombieMovePointsPerSec
@@ -191,5 +205,46 @@ class GameScene: SKScene {
         let actionMove = SKAction.moveToX(-ennemy.size.width / 2, duration: 2.0)
         let actionRemove = SKAction.removeFromParent()
         ennemy.runAction(SKAction.sequence([actionMove, actionRemove]))
+    }
+    
+    
+    
+    func startZombieAnimation(){
+        if zombie.actionForKey("animation") == nil {
+            zombie.runAction(
+                SKAction.repeatActionForever(zombieAnimation),
+                withKey: "animation")
+        }
+    }
+    
+    func stopZombie () {
+        zombie.removeActionForKey("animation")
+    }
+    
+    
+    func spawnCat(){
+        let cat = SKSpriteNode(imageNamed: "cat")
+        cat.position = CGPoint(
+            x: CGFloat.random(
+                min: CGRectGetMinX(playableRect),
+                max: CGRectGetMaxX(playableRect)),
+            y: CGFloat.random(
+                min: CGRectGetMinY(playableRect),
+                max: CGRectGetMaxY(playableRect)))
+        cat.setScale(0)
+        addChild(cat)
+        
+        let appear = SKAction.scaleTo(1.0, duration: 0.5)
+    
+        cat.zRotation = -π / 16.0
+        let leftWiggle = SKAction.rotateByAngle(π/8.0, duration: 0.5)
+        let rightWiggle = leftWiggle.reversedAction()
+        let fullWiggle = SKAction.sequence([leftWiggle, rightWiggle])
+        let wiggleWait = SKAction.repeatAction(fullWiggle, count: 10)
+        
+        let disappear = SKAction.scaleTo(0, duration: 0.5)
+        let removeFromParent = SKAction.removeFromParent()
+        let actions = [appear, wiggleWait, disappear, removeFromParent]
+        cat.runAction(SKAction.sequence(actions))
     }
 }

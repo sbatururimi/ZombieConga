@@ -23,6 +23,8 @@ class GameScene: SKScene {
     let enemyCollisionSound: SKAction = SKAction.playSoundFileNamed("hitCatLady.wav", waitForCompletion: false)
     var invincible = false
     let catMovePerSec:CGFloat = 480.0
+    var lives = 5
+    var gameOver = false
     
     override init(size: CGSize) {
         let maxAspectRatio:CGFloat = 16.0/9.0
@@ -115,6 +117,11 @@ class GameScene: SKScene {
         }
         boundsCheckZombie()
         moveTrain()
+        
+        if lives <= 0 && !gameOver{
+            gameOver = true
+            println("You lose!")
+        }
     }
     
     
@@ -280,6 +287,7 @@ class GameScene: SKScene {
     }
     
     func moveTrain(){
+        var trainCount = 0
         var targetPosition = zombie.position
         
         enumerateChildNodesWithName("train")
@@ -295,12 +303,20 @@ class GameScene: SKScene {
                     node.runAction(moveAction)
                 }
                 targetPosition = node.position
+                trainCount++
+        }
+        
+        if trainCount >= 30 && !gameOver {
+            gameOver = true
+            println("You win!")
         }
     }
     
     func zombieHitEnemy(enemy:SKSpriteNode){
         invincible = true
         runAction(enemyCollisionSound)
+        loseCtas()
+        lives--
 //        enemy.removeFromParent()
         
         let blinkTimes = 10.0
@@ -353,6 +369,31 @@ class GameScene: SKScene {
         
         for enemy in hitEnemies{
             zombieHitEnemy(enemy)
+        }
+    }
+    
+    func loseCtas(){
+        var loseCount = 0
+        enumerateChildNodesWithName("train"){ node, stop in
+            var randomSpot = node.position
+            randomSpot.x += CGFloat.random(min: -100, max: 100)
+            randomSpot.y += CGFloat.random(min: -100, max: 100)
+            
+            node.name = ""
+            node.runAction(
+                SKAction.sequence([
+                    SKAction.group([
+                        SKAction.rotateByAngle(π * 4, duration: 1.0),
+                        SKAction.moveTo(randomSpot, duration: 1.0),
+                        SKAction.scaleTo(0, duration: 1.0)
+                        ]),
+                    SKAction.removeFromParent()
+                    ])
+            );
+            loseCount++
+            if loseCount >= 2{
+                stop.memory = true
+            }
         }
     }
     

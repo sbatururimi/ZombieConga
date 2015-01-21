@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D90A2F951A6F8CA00011B778 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90A2F941A6F8CA00011B778 /* GameOverScene.swift */; };
 		D941603C1A2BBA7F003CA19F /* backgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D94160371A2BBA7F003CA19F /* backgroundMusic.mp3 */; };
 		D941603D1A2BBA7F003CA19F /* hitCat.wav in Resources */ = {isa = PBXBuildFile; fileRef = D94160381A2BBA7F003CA19F /* hitCat.wav */; };
 		D941603E1A2BBA7F003CA19F /* hitCatLady.wav in Resources */ = {isa = PBXBuildFile; fileRef = D94160391A2BBA7F003CA19F /* hitCatLady.wav */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D90A2F941A6F8CA00011B778 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameOverScene.swift; path = Model/GameOverScene.swift; sourceTree = "<group>"; };
 		D94160371A2BBA7F003CA19F /* backgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundMusic.mp3; sourceTree = "<group>"; };
 		D94160381A2BBA7F003CA19F /* hitCat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hitCat.wav; sourceTree = "<group>"; };
 		D94160391A2BBA7F003CA19F /* hitCatLady.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hitCatLady.wav; sourceTree = "<group>"; };
@@ -82,6 +84,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D90A2F931A6F8C580011B778 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				D966DD9F1A1C0D8D00ADCB23 /* GameScene.swift */,
+				D90A2F941A6F8CA00011B778 /* GameOverScene.swift */,
+			);
+			name = Scenes;
+			sourceTree = "<group>";
+		};
 		D94160361A2BBA7F003CA19F /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				D966DD741A1C078200ADCB23 /* AppDelegate.swift */,
+				D987E7FC1A26223C00E41571 /* MyUtils.swift */,
 				D966DD981A1C0AC800ADCB23 /* MVC */,
 				D966DD9B1A1C0AEE00ADCB23 /* Resources */,
 				D966DD721A1C078200ADCB23 /* Supporting Files */,
@@ -169,8 +181,7 @@
 		D966DD9A1A1C0AD900ADCB23 /* Object */ = {
 			isa = PBXGroup;
 			children = (
-				D966DD9F1A1C0D8D00ADCB23 /* GameScene.swift */,
-				D987E7FC1A26223C00E41571 /* MyUtils.swift */,
+				D90A2F931A6F8C580011B778 /* Scenes */,
 			);
 			name = Object;
 			sourceTree = "<group>";
@@ -254,6 +265,7 @@
 					};
 					D966DD871A1C078300ADCB23 = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = 7HR546X8N8;
 						TestTargetID = D966DD6E1A1C078200ADCB23;
 					};
 				};
@@ -313,6 +325,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D90A2F951A6F8CA00011B778 /* GameOverScene.swift in Sources */,
 				D966DDA01A1C0D8D00ADCB23 /* GameScene.swift in Sources */,
 				D966DD9E1A1C0D8000ADCB23 /* GameViewController.swift in Sources */,
 				D966DD751A1C078200ADCB23 /* AppDelegate.swift in Sources */,
@@ -471,6 +484,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -482,6 +497,7 @@
 				INFOPLIST_FILE = ZombieCongaTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZombieConga.app/ZombieConga";
 			};
 			name = Debug;
@@ -490,6 +506,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -497,6 +515,7 @@
 				INFOPLIST_FILE = ZombieCongaTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZombieConga.app/ZombieConga";
 			};
 			name = Release;

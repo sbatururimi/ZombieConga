@@ -63,6 +63,7 @@ class GameScene: SKScene {
     
     
     override func didMoveToView(view: SKView) {
+        playBackgroundMusic("backgroundMusic.mp3")
         backgroundColor = SKColor.whiteColor()
         let background = SKSpriteNode(imageNamed: "background1")
         addChild(background)
@@ -84,7 +85,7 @@ class GameScene: SKScene {
         runAction(SKAction.repeatActionForever(
             SKAction.sequence([SKAction.runBlock(spawnCat),
                 SKAction.waitForDuration(1.0)])))
-        debugDrawPlayableArea()
+//        debugDrawPlayableArea()
     }
     
     override func update(currentTime: NSTimeInterval) {
@@ -122,7 +123,7 @@ class GameScene: SKScene {
             gameOver = true
             println("You lose!")
             
-            let gameOverScene = GameOverScene(size: size)
+            let gameOverScene = GameOverScene(size: size, won: false)
             gameOverScene.scaleMode = scaleMode
             
             let reveal = SKTransition.flipHorizontalWithDuration(0.5)
@@ -315,8 +316,8 @@ class GameScene: SKScene {
         if trainCount >= 5 && !gameOver {
             gameOver = true
             println("You win!")
-            
-            let gameOverScene = GameOverScene(size: size)
+            backgroundMusicPlayer.stop()
+            let gameOverScene = GameOverScene(size: size, won: true)
             gameOverScene.scaleMode = scaleMode
             
             let reveal = SKTransition.flipHorizontalWithDuration(0.5)

@@ -27,6 +27,7 @@
 		D966DDAC1A1C0E2300ADCB23 /* YouWin.png in Resources */ = {isa = PBXBuildFile; fileRef = D966DDA61A1C0E2300ADCB23 /* YouWin.png */; };
 		D966DDAD1A1C0E2300ADCB23 /* sprites.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D966DDA71A1C0E2300ADCB23 /* sprites.atlas */; };
 		D987E7FD1A26223C00E41571 /* MyUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D987E7FC1A26223C00E41571 /* MyUtils.swift */; };
+		D98D677A1A7D150900B0D201 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98D67791A7D150900B0D201 /* MainMenuScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		D966DDA61A1C0E2300ADCB23 /* YouWin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YouWin.png; sourceTree = "<group>"; };
 		D966DDA71A1C0E2300ADCB23 /* sprites.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = sprites.atlas; path = Resources/sprites.atlas; sourceTree = "<group>"; };
 		D987E7FC1A26223C00E41571 /* MyUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyUtils.swift; path = Model/MyUtils.swift; sourceTree = "<group>"; };
+		D98D67791A7D150900B0D201 /* MainMenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainMenuScene.swift; path = Model/MainMenuScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 			children = (
 				D966DD9F1A1C0D8D00ADCB23 /* GameScene.swift */,
 				D90A2F941A6F8CA00011B778 /* GameOverScene.swift */,
+				D98D67791A7D150900B0D201 /* MainMenuScene.swift */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D98D677A1A7D150900B0D201 /* MainMenuScene.swift in Sources */,
 				D90A2F951A6F8CA00011B778 /* GameOverScene.swift in Sources */,
 				D966DDA01A1C0D8D00ADCB23 /* GameScene.swift in Sources */,
 				D966DD9E1A1C0D8000ADCB23 /* GameViewController.swift in Sources */,

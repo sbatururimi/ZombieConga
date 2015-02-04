@@ -120,19 +120,19 @@ class GameScene: SKScene {
         
         if  let lastTouch = lastTouchLocation
         {
-            var diff = lastTouch - zombie.position
-            if (diff.length() <= zombieMovePointsPerSec * CGFloat(dt))
-            {
-                zombie.position = lastTouchLocation!
-                velocity = CGPointZero
-                stopZombie()
-            }
-            else
-            {
+//            var diff = lastTouch - zombie.position
+//            if (diff.length() <= zombieMovePointsPerSec * CGFloat(dt))
+//            {
+//                zombie.position = lastTouchLocation!
+//                velocity = CGPointZero
+//                stopZombie()
+//            }
+//            else
+//            {
                 moveSprite(zombie, velocity: velocity)
                 
                 rotateSprite(zombie, direction: velocity, rotateRadianPerSec: zombieRotateRadianPerSec)
-            }
+//            }
         }
         boundsCheckZombie()
         moveTrain()
@@ -186,21 +186,26 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         let touch = touches.anyObject() as UITouch
-        let touchLocation = touch.locationInNode(self)
+        let touchLocation = touch.locationInNode(backgroundLayer)
         sceneTouched(touchLocation)
     }
     
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
         let touch = touches.anyObject() as UITouch
-        let touchLocation = touch.locationInNode(self)
+//        let touchLocation = touch.locationInNode(self)
+        let touchLocation = touch.locationInNode(backgroundLayer)
         sceneTouched(touchLocation)
     }
     
     func boundsCheckZombie(){
-//        let bottomLeft = CGPointZero
-//        let topRight   = CGPoint(x: size.width, y: size.height)
-        let bottomLeft = CGPoint(x: 0, y: CGRectGetMinY(playableRect))
-        let topRight = CGPoint(x: size.width, y: CGRectGetMaxY(playableRect))
+//        let bottomLeft = CGPoint(x: 0, y: CGRectGetMinY(playableRect))
+//        let topRight = CGPoint(x: size.width, y: CGRectGetMaxY(playableRect))
+        let bottomLeft = backgroundLayer.convertPoint(
+            CGPoint(x: 0, y: CGRectGetMinY(playableRect)),
+            fromNode: self)
+        let topRight = backgroundLayer.convertPoint(
+            CGPoint(x: size.width, y: CGRectGetMaxY(playableRect)),
+            fromNode: self);
         
         if zombie.position.x <= bottomLeft.x{
             zombie.position.x = bottomLeft.x
@@ -239,16 +244,23 @@ class GameScene: SKScene {
     func spawnEnemy(){
         let enemy = SKSpriteNode(imageNamed: "enemy")
         enemy.name = "enemy"
-        enemy.position = CGPoint(
+        let enemyScenePos = CGPoint(
             x: size.width + enemy.size.width/2,
             y: CGFloat.random(
                 min: CGRectGetMinY(playableRect) + enemy.size.height/2,
                 max: CGRectGetMaxY(playableRect) - enemy.size.height/2))
+        enemy.position = backgroundLayer.convertPoint(enemyScenePos, fromNode: self)
+//        enemy.position = CGPoint(
+//            x: size.width + enemy.size.width/2,
+//            y: CGFloat.random(
+//                min: CGRectGetMinY(playableRect) + enemy.size.height/2,
+//                max: CGRectGetMaxY(playableRect) - enemy.size.height/2))
 //        addChild(enemy)
         backgroundLayer.addChild(enemy)
 
         
-        let actionMove = SKAction.moveToX(-enemy.size.width / 2, duration: 2.0)
+//        let actionMove = SKAction.moveToX(-enemy.size.width / 2, duration: 2.0)
+        let actionMove = SKAction.moveByX(-size.width-enemy.size.width, y: 0, duration: 2.0)
         let actionRemove = SKAction.removeFromParent()
         enemy.runAction(SKAction.sequence([actionMove, actionRemove]))
     }
@@ -271,13 +283,21 @@ class GameScene: SKScene {
     func spawnCat(){
         let cat = SKSpriteNode(imageNamed: "cat")
         cat.name = "cat"
-        cat.position = CGPoint(
+        let catScenePos = CGPoint(
             x: CGFloat.random(
                 min: CGRectGetMinX(playableRect),
                 max: CGRectGetMaxX(playableRect)),
             y: CGFloat.random(
                 min: CGRectGetMinY(playableRect),
                 max: CGRectGetMaxY(playableRect)))
+        cat.position = backgroundLayer.convertPoint(catScenePos, fromNode: self)
+//        cat.position = CGPoint(
+//            x: CGFloat.random(
+//                min: CGRectGetMinX(playableRect),
+//                max: CGRectGetMaxX(playableRect)),
+//            y: CGFloat.random(
+//                min: CGRectGetMinY(playableRect),
+//                max: CGRectGetMaxY(playableRect)))
         cat.setScale(0)
 //        addChild(cat)
         backgroundLayer.addChild(cat)
@@ -466,8 +486,8 @@ class GameScene: SKScene {
 //                y: 0)
 //            let amountToMove = backgroundVelocity * CGFloat(self.dt)
 //            background.position += amountToMove
-            
-            if background.position.x <= -background.size.width{
+            let backgroundScreenPos = self.backgroundLayer.convertPoint(background.position, toNode: self)
+            if backgroundScreenPos.x <= -background.size.width{
                 background.position = CGPoint(
                     x: background.position.x + background.size.width * 2,
                     y: background.position.y)
